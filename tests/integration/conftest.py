@@ -9,6 +9,7 @@ from subprocess import PIPE, Popen
 import pytest
 import requests
 from clickhouse_connect import get_client
+from proton_driver import Client
 
 
 # Ensure that test users exist in environment
@@ -71,10 +72,10 @@ def test_config(ch_test_users, ch_test_version):
         else:
             client_port = test_port
 
-    test_client = get_client(
+    test_client = Client(
         host=test_host,
         port=client_port,
-        username=test_user,
+        user=test_user,
         password=test_password,
         secure=test_secure,
     )
