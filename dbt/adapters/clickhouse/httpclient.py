@@ -10,6 +10,7 @@ from dbt.adapters.clickhouse.__version__ import version as dbt_clickhouse_versio
 from dbt.adapters.clickhouse.dbclient import ChClientWrapper, ChRetryableException
 from dbt.adapters.clickhouse.util import hide_stack_trace
 
+from proton_driver import Client, errors
 
 class ChHttpClient(ChClientWrapper):
     def query(self, sql, **kwargs):
@@ -55,7 +56,7 @@ class ChHttpClient(ChClientWrapper):
 
     def _create_client(self, credentials):
         try:
-            return clickhouse_connect.get_client(
+            return Client(
                 host=credentials.host,
                 port=credentials.port,
                 username=credentials.user,
