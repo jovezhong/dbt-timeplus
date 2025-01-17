@@ -231,7 +231,7 @@
 
 {% macro clickhouse__insert_into(target_relation, sql, has_contract) %}
   {%- set dest_columns = adapter.get_columns_in_relation(target_relation) -%}
-  {%- set dest_cols_csv = dest_columns | map(attribute='quoted') | join(', ') -%}
+  {%- set dest_cols_csv = dest_columns | selectattr("name", "ne", "_tp_sn") | map(attribute='quoted') | join(', ') -%}
 
   insert into {{ target_relation }}
         ({{ dest_cols_csv }})
@@ -240,9 +240,6 @@
           SELECT {{ dest_cols_csv }} FROM ( {{ sql }} )
   {%- else -%}
     {{ sql }} SETTINGS query_mode='table'
-    {%- if not adapter.is_before_version('2.5.10') %}
-    ,asterisk_include_tp_sn_column=true
-    {%- endif %}
   {%- endif -%}
   {{ adapter.get_model_query_settings(model) }}
 {%- endmacro %}
