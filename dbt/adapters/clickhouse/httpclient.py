@@ -10,6 +10,7 @@ from dbt.adapters.clickhouse.__version__ import version as dbt_clickhouse_versio
 from dbt.adapters.clickhouse.dbclient import ChClientWrapper, ChRetryableException
 from dbt.adapters.clickhouse.util import hide_stack_trace
 
+
 class ChHttpClient(ChClientWrapper):
     def query(self, sql, **kwargs):
         try:

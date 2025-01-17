@@ -74,7 +74,7 @@ def test_config(ch_test_users, ch_test_version):
     test_client = get_client(
         host=test_host,
         port=client_port,
-        user=test_user,
+        username=test_user,
         password=test_password,
         secure=test_secure,
     )
