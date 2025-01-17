@@ -157,7 +157,7 @@
       {{ create_distributed_local_table(distributed_intermediate_relation, intermediate_relation, existing_relation) }}
     {% else %}
       {% call statement('main') %}
-          create table {{ intermediate_relation }} {{ on_cluster_clause(existing_relation) }} as {{ new_data_relation }}
+          create stream {{ intermediate_relation }} {{ on_cluster_clause(existing_relation) }} as {{ new_data_relation }}
       {% endcall %}
     {% endif %}
 
@@ -254,7 +254,7 @@
       {{ get_create_table_as_sql(False, new_data_relation, sql) }}
     {%- endcall %}
     {% call statement('main') -%}
-        create table {{ intermediate_relation }} as {{ existing_relation }}
+        create stream {{ intermediate_relation }} as {{ existing_relation }}
     {%- endcall %}
     {% call statement('insert_new_data') -%}
         insert into {{ intermediate_relation }} select * from {{ new_data_relation }}

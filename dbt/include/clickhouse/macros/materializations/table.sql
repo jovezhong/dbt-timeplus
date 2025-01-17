@@ -194,7 +194,7 @@
           {{ sql }}
         )
     {%- else %}
-        create table {{ relation }}
+        create stream {{ relation }}
         {{ on_cluster_clause(relation)}}
         {%- if has_contract%}
           {{ get_assert_columns_equivalent(sql) }}

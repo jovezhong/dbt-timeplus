@@ -102,7 +102,7 @@ class ClickHouseAdapter(SQLAdapter):
 
         decimals = agate_table.aggregate(agate.MaxPrecision(col_idx))
         # We match these type to the Column.TYPE_LABELS for consistency
-        return 'Float32' if decimals else 'Int32'
+        return 'float32' if decimals else 'int32'
 
     @classmethod
     def convert_boolean_type(cls, agate_table: "agate.Table", col_idx: int) -> str:
