@@ -20,7 +20,7 @@ uniq_source_model = """
         unique_key=['impid']
     )
 }}
-SELECT now() - toIntervalHour(number) as ts, toInt32(number) as impid, concat('value', toString(number)) as value1
+SELECT now() - to_interval_hour(number) as ts, to_int32(number) as impid, concat('value', to_string(number)) as value1
   FROM numbers(100)
 """
 

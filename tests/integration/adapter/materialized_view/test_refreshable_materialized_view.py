@@ -80,8 +80,8 @@ class TestBasicRefreshableMV:
         """
         results = run_dbt(["seed"])
         assert len(results) == 1
-        columns = project.run_sql(f"DESCRIBE TABLE {project.test_schema}.people", fetch="all")
-        assert columns[0][1] == "Int32"
+        columns = project.run_sql(f"DESCRIBE STREAM {project.test_schema}.people", fetch="all")
+        assert columns[0][1] == "int32"
 
         # create the model
         results = run_dbt()
@@ -115,8 +115,8 @@ class TestBasicRefreshableMV:
         """
         results = run_dbt(["seed"])
         assert len(results) == 1
-        columns = project.run_sql(f"DESCRIBE TABLE {project.test_schema}.people", fetch="all")
-        assert columns[0][1] == "Int32"
+        columns = project.run_sql(f"DESCRIBE STREAM {project.test_schema}.people", fetch="all")
+        assert columns[0][1] == "int32"
 
         # re-run dbt but this time with the new MV SQL
         run_vars = {"run_type": "validate_depends_on"}

@@ -27,7 +27,7 @@
 
   {%- set upsert = target.derivative('__snapshot_upsert') -%}
   {% call statement('create_upsert_relation') %}
-    create table if not exists {{ upsert }} as {{ target }}
+    create stream if not exists {{ upsert }} as {{ target }}
   {% endcall %}
 
   {% call statement('insert_unchanged_data') %}

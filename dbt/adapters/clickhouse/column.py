@@ -11,10 +11,10 @@ Self = TypeVar('Self', bound='ClickHouseColumn')
 @dataclass
 class ClickHouseColumn(Column):
     TYPE_LABELS = {
-        'STRING': 'String',
-        'TIMESTAMP': 'DateTime',
-        'FLOAT': 'Float32',
-        'INTEGER': 'Int32',
+        'STRING': 'string',
+        'TIMESTAMP': 'datetime',
+        'FLOAT': 'float32',
+        'INTEGER': 'int32',
     }
     is_nullable: bool = False
     is_low_cardinality: bool = False
