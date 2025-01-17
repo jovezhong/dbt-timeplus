@@ -67,7 +67,6 @@
 {% endmaterialization %}
 
 {% macro engine_clause() %}
-  engine = {{ config.get('engine', default='MergeTree()') }}
 {%- endmacro -%}
 
 {% macro partition_cols(label) %}
@@ -116,7 +115,7 @@
       {%- endfor -%}
       )
     {%- else %}
-      {{ label }} (tuple())
+      {{ label }} _tp_time
     {%- endif %}
   {%- endif %}
 {%- endmacro -%}
@@ -141,7 +140,7 @@
 {% macro clickhouse__create_table_as(temporary, relation, sql) -%}
     {% set has_contract = config.get('contract').enforced %}
     {% set create_table = create_table_or_empty(temporary, relation, sql, has_contract) %}
-    {% if adapter.is_before_version('22.7.1.2484') or temporary -%}
+    {% if adapter.is_before_version('0.22.7.1.2484') or temporary -%}
         {{ create_table }}
     {%- else %}
         {% call statement('create_table_empty') %}
@@ -208,7 +207,7 @@
         {{ adapter.get_model_settings(model, config.get('engine', default='MergeTree')) }}
 
         {%- if not has_contract %}
-          {%- if not adapter.is_before_version('22.7.1.2484') %}
+          {%- if not adapter.is_before_version('100.22.7.1.2484') %}
             empty
           {%- endif %}
           as (
