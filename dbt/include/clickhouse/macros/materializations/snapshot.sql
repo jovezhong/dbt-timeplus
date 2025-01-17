@@ -1,5 +1,5 @@
 {% macro clickhouse__snapshot_hash_arguments(args) -%}
-  halfMD5({%- for arg in args -%}
+  half_md5({%- for arg in args -%}
     coalesce(cast({{ arg }} as varchar ), '')
     {% if not loop.last %} || '|' || {% endif %}
   {%- endfor -%})
