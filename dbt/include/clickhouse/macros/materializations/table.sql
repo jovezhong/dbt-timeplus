@@ -163,10 +163,10 @@
 {% macro add_index_and_projections(relation) %}
     {%- set projections = config.get('projections', default=[]) -%}
     {%- set indexes = config.get('indexes', default=[]) -%}
-    
+
     {% if projections | length > 0 or indexes | length > 0 %}
         {% call statement('add_projections_and_indexes') %}
-            ALTER TABLE {{ relation }}
+            ALTER STREAM {{ relation }}
             {%- if projections %}
                 {%- for projection in projections %}
                     ADD PROJECTION {{ projection.get('name') }} ({{ projection.get('query') }})
@@ -215,10 +215,13 @@
 
         {%- if not has_contract %}
           {%- if not adapter.is_before_version('100.22.7.1.2484') %}
-            empty
+            empty --Timeplus doesn't support empty tables yet
           {%- endif %}
           as (
-            {{ sql }}
+            {{ sql }} SETTINGS query_mode='table'
+            {%- if not adapter.is_before_version('2.5.10') %}
+            ,asterisk_include_tp_sn_column=true
+            {%- endif %}
           )
         {%- endif %}
         {{ adapter.get_model_query_settings(model) }}
@@ -236,7 +239,10 @@
     -- Use a subquery to get columns in the right order
           SELECT {{ dest_cols_csv }} FROM ( {{ sql }} )
   {%- else -%}
-      {{ sql }}
+    {{ sql }} SETTINGS query_mode='table'
+    {%- if not adapter.is_before_version('2.5.10') %}
+    ,asterisk_include_tp_sn_column=true
+    {%- endif %}
   {%- endif -%}
   {{ adapter.get_model_query_settings(model) }}
 {%- endmacro %}
