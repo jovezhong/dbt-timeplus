@@ -73,11 +73,11 @@
   {% if target.can_exchange %}
     {% do exchange_tables_atomic(upsert, target) %}
     {% call statement('drop_exchanged_relation') %}
-      drop table if exists {{ upsert }};
+      drop stream if exists {{ upsert }};
     {% endcall %}
   {% else %}
     {% call statement('drop_target_relation') %}
-      drop table if exists {{ target }};
+      drop stream if exists {{ target }};
     {% endcall %}
     {% call statement('rename_upsert_relation') %}
       rename table {{ upsert }} to {{ target }};

@@ -251,7 +251,7 @@ class ChClientWrapper(ABC):
             finally:
                 try:
                     for table in swap_tables:
-                        self.command(f'DROP TABLE IF EXISTS {table}')
+                        self.command(f'DROP STREAM IF EXISTS {table}')
                 except DbtDatabaseError:
                     logger.info('Unexpected server exception dropping table')
         except DbtDatabaseError:
