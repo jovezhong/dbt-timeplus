@@ -24,7 +24,7 @@
     select
       t.name as name,
       t.database as schema,
-      multiIf(
+      multi_if(
         engine in ('MaterializedView', 'View'), 'view',
         engine = 'Dictionary', 'dictionary',
         'table'
