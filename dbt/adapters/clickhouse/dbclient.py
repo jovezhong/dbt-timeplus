@@ -59,7 +59,7 @@ def get_db_client(credentials: ClickHouseCredentials):
                 'Native adapter required but package clickhouse-driver is not installed'
             ) from ex
     try:
-        import clickhouse_connect  # noqa
+        import timeplus_connect  # noqa
 
         from dbt.adapters.clickhouse.httpclient import ChHttpClient
 
