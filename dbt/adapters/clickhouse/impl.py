@@ -94,7 +94,7 @@ class ClickHouseAdapter(SQLAdapter):
 
     @classmethod
     def convert_text_type(cls, agate_table: "agate.Table", col_idx: int) -> str:
-        return 'String'
+        return 'string'
 
     @classmethod
     def convert_number_type(cls, agate_table: "agate.Table", col_idx: int) -> str:

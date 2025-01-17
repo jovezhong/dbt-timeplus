@@ -75,9 +75,9 @@ lw_delete_inc = """
 }}
 {% if is_incremental() %}
    WITH (SELECT max(key1) - 20 FROM lw_delete_inc) as old_max
-   SELECT assumeNotNull(toUInt64(number + old_max + 1)) as key1, toInt64(-(number + old_max)) as key2, toString(number + 30) as value FROM numbers(100)
+   SELECT assume_not_null(to_uint64(number + old_max + 1)) as key1, to_int64(-(number + old_max)) as key2, to_string(number + 30) as value FROM numbers(100)
 {% else %}
-   SELECT toUInt64(number) as key1, toInt64(-number) as key2, toString(number) as value FROM numbers(100)
+   SELECT to_uint64(number) as key1, to_int64(-number) as key2, to_string(number) as value FROM numbers(100)
 {% endif %}
 """
 
@@ -117,9 +117,9 @@ compound_key_inc = """
 }}
 {% if is_incremental() %}
    WITH (SELECT max(key1) - 20 FROM compound_key_inc) as old_max
-   SELECT assumeNotNull(toUInt64(number + old_max + 1)) as key1, toInt64(-key1) as key2, toString(number + 30) as value FROM numbers(100)
+   SELECT assume_not_null(to_uint64(number + old_max + 1)) as key1, to_int64(-key1) as key2, to_string(number + 30) as value FROM numbers(100)
 {% else %}
-   SELECT toUInt64(number) as key1, toInt64(-number) as key2, toString(number) as value FROM numbers(100)
+   SELECT to_uint64(number) as key1, to_int64(-number) as key2, to_string(number) as value FROM numbers(100)
 {% endif %}
 """
 
@@ -184,7 +184,7 @@ class TestInsertsOnlyDistributedIncrementalMaterialization(BaseIncremental):
 incremental_not_schema_change_sql = """
 {{ config(materialized="distributed_incremental", unique_key="user_id_current_time",on_schema_change="sync_all_columns") }}
 select
-    toString(1) || '-' || toString(now64()) as user_id_current_time,
+    to_string(1) || '-' || to_string(now64()) as user_id_current_time,
     {% if is_incremental() %}
         'thisis18characters' as platform
     {% else %}

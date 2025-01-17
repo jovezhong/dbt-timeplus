@@ -77,7 +77,7 @@ class TestColumn:
 def verify_column(
     name: str, dtype: str, is_string: bool, is_numeric: bool, is_float: bool, is_int: bool
 ) -> ClickHouseColumn:
-    data_type = 'String' if is_string else dtype
+    data_type = 'string' if is_string else dtype
     col = ClickHouseColumn(column=name, dtype=dtype)
     verify_column_types(col, is_string, is_numeric, is_float, is_int)
     assert repr(col) == f'<ClickhouseColumn {name} ({data_type}, is nullable: False)>'
