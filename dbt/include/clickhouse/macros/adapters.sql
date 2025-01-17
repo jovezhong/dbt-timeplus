@@ -27,7 +27,7 @@
       multi_if(
         engine in ('MaterializedView', 'View'), 'view',
         engine = 'Dictionary', 'dictionary',
-        'table'
+        'stream'
       ) as type,
       db.engine as db_engine,
       {%- if adapter.get_clickhouse_cluster_name() -%}
