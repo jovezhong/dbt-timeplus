@@ -39,7 +39,7 @@
 
 
 {% macro clickhouse__cast_bool_to_text(field) %}
-    multiIf({{ field }} > 0, 'true', {{ field }} = 0, 'false', NULL)
+    multi_if({{ field }} > 0, 'true', {{ field }} = 0, 'false', NULL)
 {% endmacro %}
 
 
