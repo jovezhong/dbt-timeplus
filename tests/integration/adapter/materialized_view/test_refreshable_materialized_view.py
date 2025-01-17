@@ -88,10 +88,10 @@ class TestBasicRefreshableMV:
         assert len(results) == 1
 
         columns = project.run_sql(f"DESCRIBE TABLE hackers", fetch="all")
-        assert columns[0][1] == "String"
+        assert columns[0][1] == "string"
 
         columns = project.run_sql(f"DESCRIBE hackers_mv", fetch="all")
-        assert columns[0][1] == "String"
+        assert columns[0][1] == "string"
 
         check_relation_types(
             project.adapter,

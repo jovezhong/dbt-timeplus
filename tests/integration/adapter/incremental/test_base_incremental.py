@@ -71,7 +71,7 @@ lw_delete_inc = """
    select 2 as key1, 500 as key2, 'test' as value UNION ALL
    select 102 as key1, 400 as key2, 'test2' as value
 {% else %}
-   SELECT toUInt64(number) as key1, toInt64(-number) as key2, toString(number) as value FROM numbers(100)
+   SELECT to_uint64(number) as key1, to_int64(-number) as key2, to_string(number) as value FROM numbers(100)
 {% endif %}
 """
 
@@ -106,7 +106,7 @@ legacy_inc = """
    select 2 as key1, 500 as key2, 'test' as value UNION ALL
    select 102 as key1, 400 as key2, 'test2' as value
 {% else %}
-   SELECT toUInt64(number) as key1, toInt64(-number) as key2, toString(number) as value FROM numbers(100)
+   SELECT to_uint64(number) as key1, to_int64(-number) as key2, to_string(number) as value FROM numbers(100)
 {% endif %}
 """
 
@@ -146,9 +146,9 @@ compound_key_inc = """
 }}
 {% if is_incremental() %}
    WITH (SELECT max(key1) - 20 FROM compound_key_inc) as old_max
-   SELECT assumeNotNull(toUInt64(number + old_max + 1)) as key1, toInt64(-key1) as key2, toString(number + 30) as value FROM numbers(100)
+   SELECT assume_not_null(to_uint64(number + old_max + 1)) as key1, to_int64(-key1) as key2, to_string(number + 30) as value FROM numbers(100)
 {% else %}
-   SELECT toUInt64(number) as key1, toInt64(-number) as key2, toString(number) as value FROM numbers(100)
+   SELECT to_uint64(number) as key1, to_int64(-number) as key2, to_string(number) as value FROM numbers(100)
 {% endif %}
 """
 
@@ -194,13 +194,13 @@ insert_overwrite_inc = """
 {% if not is_incremental() %}
     SELECT partitionKey1, partitionKey2, orderKey, value
     FROM VALUES(
-        'partitionKey1 UInt8, partitionKey2 String, orderKey UInt8, value String',
+        'partitionKey1 uint8, partitionKey2 string, orderKey uint8, value string',
         (1, 'p1', 1, 'a'), (1, 'p1', 1, 'b'), (2, 'p1', 1, 'c'), (2, 'p2', 1, 'd')
     )
 {% else %}
     SELECT partitionKey1, partitionKey2, orderKey, value
     FROM VALUES(
-        'partitionKey1 UInt8, partitionKey2 String, orderKey UInt8, value String',
+        'partitionKey1 uint8, partitionKey2 string, orderKey uint8, value string',
         (1, 'p1', 2, 'e'), (3, 'p1', 2, 'f')
     )
 {% endif %}

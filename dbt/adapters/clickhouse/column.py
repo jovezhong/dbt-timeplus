@@ -18,10 +18,10 @@ class ClickHouseColumn(Column):
     }
     is_nullable: bool = False
     is_low_cardinality: bool = False
-    _low_card_regex = re.compile(r'^LowCardinality\((.*)\)$')
-    _nullable_regex = re.compile(r'^Nullable\((.*)\)$')
-    _fix_size_regex = re.compile(r'FixedString\((.*?)\)')
-    _decimal_regex = re.compile(r'Decimal\((\d+), (\d+)\)')
+    _low_card_regex = re.compile(r'^low_cardinality\((.*)\)$')
+    _nullable_regex = re.compile(r'^nullable\((.*)\)$')
+    _fix_size_regex = re.compile(r'fixed_string\((.*?)\)')
+    _decimal_regex = re.compile(r'decimal\((\d+), (\d+)\)')
 
     def __init__(self, column: str, dtype: str) -> None:
         char_size = None
@@ -98,7 +98,7 @@ class ClickHouseColumn(Column):
 
     @classmethod
     def string_type(cls, size: int) -> str:
-        return 'String'
+        return 'string'
 
     @classmethod
     def numeric_type(cls, dtype: str, precision: Any, scale: Any) -> str:

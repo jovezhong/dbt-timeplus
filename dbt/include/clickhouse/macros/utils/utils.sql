@@ -44,7 +44,7 @@
 
 
 {% macro clickhouse__hash(field) -%}
-    lower(hex(MD5(toString({{ field }} ))))
+    lower(hex(MD5(to_string({{ field }} ))))
 {%- endmacro %}
 
 
@@ -54,7 +54,7 @@
 
 
 {% macro clickhouse__split_part(string_text, delimiter_text, part_number) %}
-    splitByString({{delimiter_text}}, {{ string_text }})[{{ part_number }}]
+    split_by_string({{delimiter_text}}, {{ string_text }})[{{ part_number }}]
 {% endmacro %}
 
 
@@ -84,9 +84,9 @@
     {%- endif %}
 
     {% if limit_num -%}
-      arrayStringConcat(arraySlice({{ arr }}, 1, {{ limit_num }}), {{delimiter_text}})
+      array_string_concat(array_slice({{ arr }}, 1, {{ limit_num }}), {{delimiter_text}})
     {% else -%}
-      arrayStringConcat({{ arr }}, {{delimiter_text}})
+      array_string_concat({{ arr }}, {{delimiter_text}})
     {%- endif %}
 {%- endmacro %}
 
