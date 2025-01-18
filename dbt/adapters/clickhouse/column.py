@@ -30,7 +30,7 @@ class ClickHouseColumn(Column):
 
         dtype = self._inner_dtype(dtype)
 
-        if dtype.lower().startswith('fixedstring'):
+        if dtype.lower().startswith('fixed_string'):
             match_sized = self._fix_size_regex.search(dtype)
             if match_sized:
                 char_size = int(match_sized.group(1))
@@ -65,18 +65,18 @@ class ClickHouseColumn(Column):
     def is_string(self) -> bool:
         return self.dtype.lower() in [
             'string',
-            'fixedstring',
-            'longblob',
-            'longtext',
-            'tinytext',
-            'text',
-            'varchar',
-            'mediumblob',
-            'blob',
-            'tinyblob',
-            'char',
-            'mediumtext',
-        ] or self.dtype.lower().startswith('fixedstring')
+            'fixed_string',
+            # 'longblob',
+            # 'longtext',
+            # 'tinytext',
+            # 'text',
+            # 'varchar',
+            # 'mediumblob',
+            # 'blob',
+            # 'tinyblob',
+            # 'char',
+            # 'mediumtext',
+        ] or self.dtype.lower().startswith('fixed_string')
 
     def is_integer(self) -> bool:
         return self.dtype.lower().startswith('int') or self.dtype.lower().startswith('uint')
@@ -91,7 +91,7 @@ class ClickHouseColumn(Column):
         if not self.is_string():
             raise DbtRuntimeError('Called string_size() on non-string field!')
 
-        if not self.dtype.lower().startswith('fixedstring') or self.char_size is None:
+        if not self.dtype.lower().startswith('fixed_string') or self.char_size is None:
             return 256
         else:
             return int(self.char_size)
@@ -102,15 +102,15 @@ class ClickHouseColumn(Column):
 
     @classmethod
     def numeric_type(cls, dtype: str, precision: Any, scale: Any) -> str:
-        return f'Decimal({precision}, {scale})'
+        return f'decimal({precision}, {scale})'
 
     @classmethod
     def nested_type(cls, dtype: str, is_low_cardinality: bool, is_nullable: bool) -> str:
         template = "{}"
         if is_low_cardinality:
-            template = template.format("LowCardinality({})")
+            template = template.format("low_cardinality({})")
         if is_nullable:
-            template = template.format("Nullable({})")
+            template = template.format("nullable({})")
         return template.format(dtype)
 
     def literal(self, value):

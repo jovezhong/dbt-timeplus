@@ -54,7 +54,7 @@ class TestColumn:
         verify_column_types(col, True, False, False, False)
         assert (
             repr(col)
-            == '<ClickhouseColumn name low_cardinality(nullable(string)), is nullable: True)>'
+            == '<ClickhouseColumn name (low_cardinality(nullable(string)), is nullable: True)>'
         )
         col = ClickHouseColumn(column='name', dtype='low_cardinality(nullable(fixed_string(16)))')
         verify_column_types(col, True, False, False, False)
@@ -87,7 +87,7 @@ def verify_column(
     verify_column_types(nullable_col, is_string, is_numeric, is_float, is_int)
     assert (
         repr(nullable_col)
-        == f'<ClickhouseColumn {name} (N=nullable({data_type}), is nullable: True)>'
+        == f'<ClickhouseColumn {name} (nullable({data_type}), is nullable: True)>'
     )
 
     # Test low cardinality dtype

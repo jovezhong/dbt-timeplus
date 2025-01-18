@@ -237,7 +237,7 @@ class ChClientWrapper(ABC):
             for table in swap_tables:
                 self.command(create_cmd.format(quote_identifier(table)))
             try:
-                self.command('EXCHANGE TABLES {} AND {}'.format(*swap_tables))
+                self.command('EXCHANGE STREAMS {} AND {}'.format(*swap_tables))
                 return True
             except DbtDatabaseError:
                 logger.info('ClickHouse server does not support the EXCHANGE TABLES command')
