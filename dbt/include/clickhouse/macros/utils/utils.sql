@@ -59,7 +59,7 @@
 
 
 {% macro clickhouse__replace(field, old_chars, new_chars) %}
-   replaceAll({{ field }},'{{ old_chars }}','{{ new_chars }}')
+   replace_all({{ field }},'{{ old_chars }}','{{ new_chars }}')
 {% endmacro %}
 
 
@@ -78,7 +78,7 @@
       {% endif %}
       {% set order_by_field = order_by_clause_tokens[0] %}
 
-      {% set arr = "arrayMap(x -> x.1, array{}Sort(x -> x.2, arrayZip(array_agg({}), array_agg({}))))".format(sort_direction, measure, order_by_field) %}
+      {% set arr = "array_map(x -> x.1, array_{}_sort(x -> x.2, array_zip(array_agg({}), array_agg({}))))".format(sort_direction, measure, order_by_field) %}
     {% else -%}
       {% set arr = "array_agg({})".format(measure) %}
     {%- endif %}
@@ -101,11 +101,10 @@
 
 
 {% macro clickhouse__array_append(array, new_element) -%}
-    arrayPushBack({{ array }}, {{ new_element }})
+    array_push_back({{ array }}, {{ new_element }})
 {% endmacro %}
 
 
 {% macro clickhouse__array_concat(array_1, array_2) -%}
-   arrayConcat({{ array_1 }}, {{ array_2 }})
+   array_concat({{ array_1 }}, {{ array_2 }})
 {% endmacro %}
-

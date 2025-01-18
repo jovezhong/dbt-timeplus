@@ -108,7 +108,7 @@ complex_schema_change_sql = """
 
 {%% if not is_incremental() %%}
 select
-    toUInt8(number) as col_1,
+    to_uint8(number) as col_1,
     number + 1 as col_2
 from numbers(3)
 {%% else %%}
