@@ -11,8 +11,8 @@ class TestLastDay(BaseLastDay):
                 "test": {
                     "data_last_day": {
                         "+column_types": {
-                            "date_day": "Nullable(Date)",
-                            "result": "Nullable(Date)",
+                            "date_day": "nullable(date)",
+                            "result": "nullable(date)",
                         },
                     },
                 },

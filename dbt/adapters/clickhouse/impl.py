@@ -106,7 +106,7 @@ class ClickHouseAdapter(SQLAdapter):
 
     @classmethod
     def convert_boolean_type(cls, agate_table: "agate.Table", col_idx: int) -> str:
-        return 'Bool'
+        return 'bool'
 
     @classmethod
     def convert_datetime_type(cls, agate_table: "agate.Table", col_idx: int) -> str:

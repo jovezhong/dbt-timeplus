@@ -120,7 +120,7 @@ my_model_view_wrong_name_sql = """
 select
   'blue' as color,
   1 as error,
-  toDate('2019-01-01') as date_day
+  to_date('2019-01-01') as date_day
 """
 
 my_model_view_wrong_order_sql = """
