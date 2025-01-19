@@ -24,17 +24,17 @@ select
     'CT' as state,
     'Hartford' as county,
     'Hartford' as city,
-    toDate('2022-02-14') as last_visit_date
+    to_date('2022-02-14') as last_visit_date
 union all
-select 'MA','Suffolk','Boston',toDate('2020-02-12')
+select 'MA','Suffolk','Boston',to_date('2020-02-12')
 union all
-select 'NJ','Mercer','Trenton',toDate('2022-01-01')
+select 'NJ','Mercer','Trenton',to_date('2022-01-01')
 union all
-select 'NY','Kings','Brooklyn',toDate('2021-04-02')
+select 'NY','Kings','Brooklyn',to_date('2021-04-02')
 union all
-select 'NY','New York','Manhattan',toDate('2021-04-01')
+select 'NY','New York','Manhattan',to_date('2021-04-01')
 union all
-select 'PA','Philadelphia','Philadelphia',toDate('2021-05-21')
+select 'PA','Philadelphia','Philadelphia',to_date('2021-05-21')
 """
 
 
@@ -49,17 +49,17 @@ select
     'CT' as state,
     'Hartford' as county,
     'Hartford' as city,
-    toDate('2022-02-14') as last_visit_date
+    to_date('2022-02-14') as last_visit_date
 union all
-select 'MA','Suffolk','Boston',toDate('2020-02-12')
+select 'MA','Suffolk','Boston',to_date('2020-02-12')
 union all
-select 'NJ','Mercer','Trenton',toDate('2022-01-01')
+select 'NJ','Mercer','Trenton',to_date('2022-01-01')
 union all
-select 'NY','Kings','Brooklyn',toDate('2021-04-02')
+select 'NY','Kings','Brooklyn',to_date('2021-04-02')
 union all
-select 'NY','New York','Manhattan',toDate('2021-04-01')
+select 'NY','New York','Manhattan',to_date('2021-04-01')
 union all
-select 'PA','Philadelphia','Philadelphia',toDate('2021-05-21')
+select 'PA','Philadelphia','Philadelphia',to_date('2021-05-21')
 
 """
 

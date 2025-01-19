@@ -59,7 +59,7 @@ def get_db_client(credentials: ClickHouseCredentials):
                 'Native adapter required but package clickhouse-driver is not installed'
             ) from ex
     try:
-        import clickhouse_connect  # noqa
+        import timeplus_connect  # noqa
 
         from dbt.adapters.clickhouse.httpclient import ChHttpClient
 
@@ -230,14 +230,14 @@ class ChClientWrapper(ABC):
             if db_engine not in ('Atomic', 'Replicated'):
                 return False
             create_cmd = (
-                'CREATE TABLE IF NOT EXISTS {} (test String) ENGINE MergeTree() ORDER BY tuple()'
+                'CREATE STREAM IF NOT EXISTS {} (test string)'
             )
             table_id = str(uuid.uuid1()).replace('-', '')
             swap_tables = [f'__dbt_exchange_test_{x}_{table_id}' for x in range(0, 2)]
             for table in swap_tables:
                 self.command(create_cmd.format(quote_identifier(table)))
             try:
-                self.command('EXCHANGE TABLES {} AND {}'.format(*swap_tables))
+                self.command('EXCHANGE STREAMS {} AND {}'.format(*swap_tables))
                 return True
             except DbtDatabaseError:
                 logger.info('ClickHouse server does not support the EXCHANGE TABLES command')
@@ -251,7 +251,7 @@ class ChClientWrapper(ABC):
             finally:
                 try:
                     for table in swap_tables:
-                        self.command(f'DROP TABLE IF EXISTS {table}')
+                        self.command(f'DROP STREAM IF EXISTS {table}')
                 except DbtDatabaseError:
                     logger.info('Unexpected server exception dropping table')
         except DbtDatabaseError:

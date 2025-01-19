@@ -453,7 +453,7 @@ CREATE TABLE db.table_local on cluster cluster
     `created_at`
     DateTime,
     `item`
-    String
+    string
 )
     ENGINE = ReplacingMergeTree
     ORDER BY
@@ -471,7 +471,7 @@ CREATE TABLE db.table on cluster cluster
     `created_at`
     DateTime,
     `item`
-    String
+    string
 )
     ENGINE = Distributed
 (
@@ -522,7 +522,7 @@ CREATE TABLE db.table_local on cluster cluster
     `created_at`
     DateTime,
     `item`
-    String
+    string
 )
     ENGINE = MergeTree
     SETTINGS index_granularity = 8192;
@@ -535,7 +535,7 @@ CREATE TABLE db.table on cluster cluster
     `created_at`
     DateTime,
     `item`
-    String
+    string
 )
     ENGINE = Distributed
 (

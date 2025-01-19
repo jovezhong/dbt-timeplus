@@ -129,21 +129,21 @@ class TestMultipleMV:
         schema = quote_identifier(project.test_schema + "_custom_schema_for_multiple_mv")
         results = run_dbt(["seed"])
         assert len(results) == 1
-        columns = project.run_sql("DESCRIBE TABLE people", fetch="all")
-        assert columns[0][1] == "Int32"
+        columns = project.run_sql("DESCRIBE STREAM people", fetch="all")
+        assert columns[0][1] == "int32"
 
         # create the model
         run_dbt(["run"])
         assert len(results) == 1
 
-        columns = project.run_sql(f"DESCRIBE TABLE {schema}.hackers", fetch="all")
-        assert columns[0][1] == "Int32"
+        columns = project.run_sql(f"DESCRIBE STREAM {schema}.hackers", fetch="all")
+        assert columns[0][1] == "int32"
 
         columns = project.run_sql(f"DESCRIBE {schema}.hackers_mv1", fetch="all")
-        assert columns[0][1] == "Int32"
+        assert columns[0][1] == "int32"
 
         columns = project.run_sql(f"DESCRIBE {schema}.hackers_mv2", fetch="all")
-        assert columns[0][1] == "Int32"
+        assert columns[0][1] == "int32"
 
         with pytest.raises(Exception):
             columns = project.run_sql(f"DESCRIBE {schema}.hackers_mv", fetch="all")

@@ -27,13 +27,13 @@ class ClickHouseContractColumnsEqual:
     def data_types(self):
         # sql_column_value, schema_data_type, error_data_type
         return [
-            ["1::Int32", "Int32", "Int32"],
-            ["'1'", "String", "String"],
-            ["true", "Bool", "Bool"],
-            ["'2013-11-03'::DateTime", "DateTime", "DateTime"],
-            ["['a','b','c']", "Array(String)", "Array(String)"],
-            ["[1::Int32,2::Int32,3::Int32]", "Array(Int32)", "Array(Int32)"],
-            ["'1'::Float64", "Float64", "Float64"],
+            ["1::int32", "int32", "int32"],
+            ["'1'", "string", "string"],
+            ["true", "bool", "bool"],
+            ["'2013-11-03'::datetime", "datetime", "datetime"],
+            ["['a','b','c']", "array(string)", "array(string)"],
+            ["[1::int32,2::int32,3::int32]", "array(int32)", "array(int32)"],
+            ["'1'::float64", "float64", "float64"],
         ]
 
     def test__contract_wrong_column_order(self, project):

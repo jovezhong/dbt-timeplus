@@ -31,8 +31,8 @@ seeds:
   - name: empty
     config:
       column_types:
-        val2: Nullable(UInt32)
-        str1: Nullable(String)
+        val2: nullable(uint32)
+        str1: nullable(string)
       settings:
         allow_nullable_key: 1
 """
@@ -45,8 +45,8 @@ seeds:
     config:
       engine: ReplicatedMergeTree('/clickhouse/tables/{uuid}/one_shard', '{server_index}' )
       column_types:
-        val2: Nullable(UInt32)
-        str1: Nullable(String)
+        val2: nullable(uint32)
+        str1: nullable(string)
 """
 
 base_seeds_schema_yml = """
@@ -72,9 +72,9 @@ class TestCSVSeed:
         # seed command
         results = run_dbt(["seed"])
         assert len(results) == 2
-        columns = project.run_sql("DESCRIBE TABLE empty", fetch='all')
-        assert columns[2][1] == 'Nullable(UInt32)'
-        assert columns[3][1] == 'Nullable(String)'
+        columns = project.run_sql("DESCRIBE STREAM empty", fetch='all')
+        assert columns[2][1] == 'nullable(uint32)'
+        assert columns[3][1] == 'nullable(string)'
 
 
 class TestReplicatedCSVSeed:
@@ -92,6 +92,6 @@ class TestReplicatedCSVSeed:
         # seed command
         results = run_dbt(["seed"])
         assert len(results) == 1
-        columns = project.run_sql("DESCRIBE TABLE empty", fetch='all')
-        assert columns[2][1] == 'Nullable(UInt32)'
-        assert columns[3][1] == 'Nullable(String)'
+        columns = project.run_sql("DESCRIBE STREAM empty", fetch='all')
+        assert columns[2][1] == 'nullable(uint32)'
+        assert columns[3][1] == 'nullable(string)'

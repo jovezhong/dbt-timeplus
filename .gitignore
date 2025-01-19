@@ -97,3 +97,4 @@ dbt-tut
 dev/
 .python-version
 *_project/
+/timeplus_connect

@@ -25,9 +25,9 @@ HACKERS_MODEL = """
 {{ config(
        materialized='dictionary',
        fields=[
-           ('id', 'Int32'),
-           ('name', 'String'),
-           ('hacker_alias', 'String')
+           ('id', 'int32'),
+           ('name', 'string'),
+           ('hacker_alias', 'string')
        ],
        primary_key='id',
        layout='COMPLEX_KEY_HASHED()',
@@ -69,10 +69,10 @@ TAXI_ZONE_DICTIONARY = """
 {{ config(
        materialized='dictionary',
        fields=[
-           ('LocationID', 'UInt16 DEFAULT 0'),
-           ('Borough', 'String'),
-           ('Zone', 'String'),
-           ('service_zone', 'String'),
+           ('LocationID', 'uint16 DEFAULT 0'),
+           ('Borough', 'string'),
+           ('Zone', 'string'),
+           ('service_zone', 'string'),
        ],
        primary_key='LocationID',
        layout='HASHED()',
@@ -90,8 +90,8 @@ PEOPLE_DICT_MODEL = """
 {{ config(
        materialized='dictionary',
        fields=[
-           ('id', 'Int32'),
-           ('name', 'String'),
+           ('id', 'int32'),
+           ('name', 'string'),
        ],
        primary_key='id',
        layout='HASHED()',
@@ -118,10 +118,10 @@ RANGE_DICTIONARY = """
 {{ config(
        materialized='dictionary',
        fields=[
-           ('id', 'UInt8'),
-           ('start', 'UInt8'),
-           ('stop', 'UInt8'),
-           ('value', 'String')
+           ('id', 'uint8'),
+           ('start', 'uint8'),
+           ('stop', 'uint8'),
+           ('value', 'string')
        ],
        primary_key='id',
        layout='RANGE_HASHED()',
@@ -159,8 +159,8 @@ class TestQueryDictionary:
     def test_create_and_update(self, project):
         run_dbt(["seed"])
 
-        result = project.run_sql("DESCRIBE TABLE people", fetch="all")
-        assert result[0][1] == "Int32"
+        result = project.run_sql("DESCRIBE STRAEM people", fetch="all")
+        assert result[0][1] == "int32"
 
         run_dbt()
         result = project.run_sql("select count(distinct id) from hackers", fetch="all")
@@ -230,7 +230,7 @@ class TestRangeDictionary:
     def test_create(self, project):
         run_dbt()
 
-        results = project.run_sql("select dictGet(range_dictionary, 'value', 0, 1)", fetch="all")
+        results = project.run_sql("select dict_get(range_dictionary, 'value', 0, 1)", fetch="all")
         assert results[0][0] == "foo"
-        results = project.run_sql("select dictGet(range_dictionary, 'value', 0, 5)", fetch="all")
+        results = project.run_sql("select dict_get(range_dictionary, 'value', 0, 5)", fetch="all")
         assert results[0][0] == "bar"
