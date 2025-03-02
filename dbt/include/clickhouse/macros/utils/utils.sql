@@ -78,7 +78,7 @@
       {% endif %}
       {% set order_by_field = order_by_clause_tokens[0] %}
 
-      {% set arr = "array_map(x -> x.1, array_{}_sort(x -> x.2, array_zip(array_agg({}), array_agg({}))))".format(sort_direction, measure, order_by_field) %}
+      {% set arr = "array_map(x -> x.1, array_sort(x -> x.2, array_zip(array_agg({}), array_agg({}))))".format(measure, order_by_field) %}
     {% else -%}
       {% set arr = "array_agg({})".format(measure) %}
     {%- endif %}
@@ -95,7 +95,7 @@
     {% if inputs|length > 0 %}
     [ {{ inputs|join(' , ') }} ]
     {% else %}
-    emptyArray{{data_type}}()
+    empty_array_{{data_type}}()
     {% endif %}
 {%- endmacro %}
 
