@@ -250,13 +250,13 @@ insert_overwrite_replicated_inc = """
 {% if not is_incremental() %}
     SELECT partitionKey1, partitionKey2, orderKey, value
     FROM VALUES(
-        'partitionKey1 UInt8, partitionKey2 String, orderKey UInt8, value String',
+        'partitionKey1 uint8, partitionKey2 string, orderKey uint8, value string',
         (1, 'p1', 1, 'a'), (1, 'p1', 2, 'b'), (2, 'p1', 3, 'c'), (2, 'p2', 4, 'd')
     )
 {% else %}
     SELECT partitionKey1, partitionKey2, orderKey, value
     FROM VALUES(
-        'partitionKey1 UInt8, partitionKey2 String, orderKey UInt8, value String',
+        'partitionKey1 uint8, partitionKey2 string, orderKey uint8, value string',
         (1, 'p1', 2, 'e'), (3, 'p1', 2, 'f')
     )
 {% endif %}
