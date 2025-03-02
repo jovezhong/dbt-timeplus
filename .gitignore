@@ -98,3 +98,5 @@ dev/
 .python-version
 *_project/
 /timeplus_connect
+report.html
+assets/style.css
