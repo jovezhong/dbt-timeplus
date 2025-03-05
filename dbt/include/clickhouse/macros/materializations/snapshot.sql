@@ -1,5 +1,5 @@
 {% macro clickhouse__snapshot_hash_arguments(args) -%}
-  halfMD5({%- for arg in args -%}
+  half_md5({%- for arg in args -%}
     coalesce(cast({{ arg }} as varchar ), '')
     {% if not loop.last %} || '|' || {% endif %}
   {%- endfor -%})
@@ -27,7 +27,7 @@
 
   {%- set upsert = target.derivative('__snapshot_upsert') -%}
   {% call statement('create_upsert_relation') %}
-    create table if not exists {{ upsert }} as {{ target }}
+    create stream if not exists {{ upsert }} as {{ target }}
   {% endcall %}
 
   {% call statement('insert_unchanged_data') %}
@@ -73,11 +73,11 @@
   {% if target.can_exchange %}
     {% do exchange_tables_atomic(upsert, target) %}
     {% call statement('drop_exchanged_relation') %}
-      drop table if exists {{ upsert }};
+      drop stream if exists {{ upsert }};
     {% endcall %}
   {% else %}
     {% call statement('drop_target_relation') %}
-      drop table if exists {{ target }};
+      drop stream if exists {{ target }};
     {% endcall %}
     {% call statement('rename_upsert_relation') %}
       rename table {{ upsert }} to {{ target }};

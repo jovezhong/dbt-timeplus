@@ -3,6 +3,7 @@ dbt-adapters~=1.1.1
 dbt-tests-adapter==1.8.0
 clickhouse-connect>=0.7.6
 clickhouse-driver>=0.2.7
+proton-driver>=0.2.13
 pytest>=7.2.0
 pytest-dotenv==0.5.2
 black==24.3.0

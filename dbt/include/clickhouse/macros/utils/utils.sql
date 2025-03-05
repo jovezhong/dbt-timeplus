@@ -39,12 +39,12 @@
 
 
 {% macro clickhouse__cast_bool_to_text(field) %}
-    multiIf({{ field }} > 0, 'true', {{ field }} = 0, 'false', NULL)
+    multi_if({{ field }} > 0, 'true', {{ field }} = 0, 'false', NULL)
 {% endmacro %}
 
 
 {% macro clickhouse__hash(field) -%}
-    lower(hex(MD5(toString({{ field }} ))))
+    lower(hex(MD5(to_string({{ field }} ))))
 {%- endmacro %}
 
 
@@ -54,12 +54,12 @@
 
 
 {% macro clickhouse__split_part(string_text, delimiter_text, part_number) %}
-    splitByString({{delimiter_text}}, {{ string_text }})[{{ part_number }}]
+    split_by_string({{delimiter_text}}, {{ string_text }})[{{ part_number }}]
 {% endmacro %}
 
 
 {% macro clickhouse__replace(field, old_chars, new_chars) %}
-   replaceAll({{ field }},'{{ old_chars }}','{{ new_chars }}')
+   replace_all({{ field }},'{{ old_chars }}','{{ new_chars }}')
 {% endmacro %}
 
 
@@ -78,15 +78,15 @@
       {% endif %}
       {% set order_by_field = order_by_clause_tokens[0] %}
 
-      {% set arr = "arrayMap(x -> x.1, array{}Sort(x -> x.2, arrayZip(array_agg({}), array_agg({}))))".format(sort_direction, measure, order_by_field) %}
+      {% set arr = "array_map(x -> x.1, array_sort(x -> x.2, array_zip(array_agg({}), array_agg({}))))".format(measure, order_by_field) %}
     {% else -%}
       {% set arr = "array_agg({})".format(measure) %}
     {%- endif %}
 
     {% if limit_num -%}
-      arrayStringConcat(arraySlice({{ arr }}, 1, {{ limit_num }}), {{delimiter_text}})
+      array_string_concat(array_slice({{ arr }}, 1, {{ limit_num }}), {{delimiter_text}})
     {% else -%}
-      arrayStringConcat({{ arr }}, {{delimiter_text}})
+      array_string_concat({{ arr }}, {{delimiter_text}})
     {%- endif %}
 {%- endmacro %}
 
@@ -95,17 +95,16 @@
     {% if inputs|length > 0 %}
     [ {{ inputs|join(' , ') }} ]
     {% else %}
-    emptyArray{{data_type}}()
+    empty_array_{{data_type}}()
     {% endif %}
 {%- endmacro %}
 
 
 {% macro clickhouse__array_append(array, new_element) -%}
-    arrayPushBack({{ array }}, {{ new_element }})
+    array_push_back({{ array }}, {{ new_element }})
 {% endmacro %}
 
 
 {% macro clickhouse__array_concat(array_1, array_2) -%}
-   arrayConcat({{ array_1 }}, {{ array_2 }})
+   array_concat({{ array_1 }}, {{ array_2 }})
 {% endmacro %}
-

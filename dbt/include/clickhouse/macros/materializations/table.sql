@@ -67,7 +67,6 @@
 {% endmaterialization %}
 
 {% macro engine_clause() %}
-  engine = {{ config.get('engine', default='MergeTree()') }}
 {%- endmacro -%}
 
 {% macro partition_cols(label) %}
@@ -116,7 +115,7 @@
       {%- endfor -%}
       )
     {%- else %}
-      {{ label }} (tuple())
+      {{ label }} _tp_time
     {%- endif %}
   {%- endif %}
 {%- endmacro -%}
@@ -141,7 +140,7 @@
 {% macro clickhouse__create_table_as(temporary, relation, sql) -%}
     {% set has_contract = config.get('contract').enforced %}
     {% set create_table = create_table_or_empty(temporary, relation, sql, has_contract) %}
-    {% if adapter.is_before_version('22.7.1.2484') or temporary -%}
+    {% if adapter.is_before_version('0.22.7.1.2484') or temporary -%}
         {{ create_table }}
     {%- else %}
         {% call statement('create_table_empty') %}
@@ -164,10 +163,10 @@
 {% macro add_index_and_projections(relation) %}
     {%- set projections = config.get('projections', default=[]) -%}
     {%- set indexes = config.get('indexes', default=[]) -%}
-    
+
     {% if projections | length > 0 or indexes | length > 0 %}
         {% call statement('add_projections_and_indexes') %}
-            ALTER TABLE {{ relation }}
+            ALTER STREAM {{ relation }}
             {%- if projections %}
                 {%- for projection in projections %}
                     ADD PROJECTION {{ projection.get('name') }} ({{ projection.get('query') }})
@@ -201,7 +200,7 @@
           {{ sql }}
         )
     {%- else %}
-        create table {{ relation }}
+        create stream {{ relation }}
         {{ on_cluster_clause(relation)}}
         {%- if has_contract%}
           {{ get_assert_columns_equivalent(sql) }}
@@ -215,11 +214,14 @@
         {{ adapter.get_model_settings(model, config.get('engine', default='MergeTree')) }}
 
         {%- if not has_contract %}
-          {%- if not adapter.is_before_version('22.7.1.2484') %}
-            empty
+          {%- if not adapter.is_before_version('100.22.7.1.2484') %}
+            empty --Timeplus doesn't support empty tables yet
           {%- endif %}
           as (
-            {{ sql }}
+            {{ sql }} SETTINGS query_mode='table'
+            {%- if not adapter.is_before_version('2.5.10') %}
+            ,asterisk_include_tp_sn_column=true
+            {%- endif %}
           )
         {%- endif %}
         {{ adapter.get_model_query_settings(model) }}
@@ -229,7 +231,7 @@
 
 {% macro clickhouse__insert_into(target_relation, sql, has_contract) %}
   {%- set dest_columns = adapter.get_columns_in_relation(target_relation) -%}
-  {%- set dest_cols_csv = dest_columns | map(attribute='quoted') | join(', ') -%}
+  {%- set dest_cols_csv = dest_columns | selectattr("name", "ne", "_tp_sn") | map(attribute='quoted') | join(', ') -%}
 
   insert into {{ target_relation }}
         ({{ dest_cols_csv }})
@@ -237,7 +239,7 @@
     -- Use a subquery to get columns in the right order
           SELECT {{ dest_cols_csv }} FROM ( {{ sql }} )
   {%- else -%}
-      {{ sql }}
+    {{ sql }} SETTINGS query_mode='table'
   {%- endif -%}
   {{ adapter.get_model_query_settings(model) }}
 {%- endmacro %}

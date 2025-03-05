@@ -8,7 +8,7 @@ from subprocess import PIPE, Popen
 
 import pytest
 import requests
-from clickhouse_connect import get_client
+from timeplus_connect import get_client
 
 
 # Ensure that test users exist in environment

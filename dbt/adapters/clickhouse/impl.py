@@ -94,7 +94,7 @@ class ClickHouseAdapter(SQLAdapter):
 
     @classmethod
     def convert_text_type(cls, agate_table: "agate.Table", col_idx: int) -> str:
-        return 'String'
+        return 'string'
 
     @classmethod
     def convert_number_type(cls, agate_table: "agate.Table", col_idx: int) -> str:
@@ -102,11 +102,11 @@ class ClickHouseAdapter(SQLAdapter):
 
         decimals = agate_table.aggregate(agate.MaxPrecision(col_idx))
         # We match these type to the Column.TYPE_LABELS for consistency
-        return 'Float32' if decimals else 'Int32'
+        return 'float32' if decimals else 'int32'
 
     @classmethod
     def convert_boolean_type(cls, agate_table: "agate.Table", col_idx: int) -> str:
-        return 'Bool'
+        return 'bool'
 
     @classmethod
     def convert_datetime_type(cls, agate_table: "agate.Table", col_idx: int) -> str:

@@ -7,24 +7,24 @@ models:
         enforced: true
     columns:
       - name: id
-        data_type: Int32
+        data_type: int32
         description: hello
       - name: color
-        data_type: String
+        data_type: string
       - name: date_day
-        data_type: Date
+        data_type: date
   - name: my_model_error
     config:
       contract:
         enforced: true
     columns:
       - name: id
-        data_type: Int32
+        data_type: int32
         description: hello
         tests:
           - unique
       - name: color
-        data_type: String
+        data_type: string
       - name: date_day
         data_type: Date
   - name: my_model_wrong_order
@@ -33,26 +33,26 @@ models:
         enforced: true
     columns:
       - name: id
-        data_type: UInt32
+        data_type: uint32
         description: hello
         tests:
           - unique
       - name: color
-        data_type: String
+        data_type: string
       - name: date_day
-        data_type: Date
+        data_type: date
   - name: my_model_wrong_name
     config:
       contract:
         enforced: true
     columns:
       - name: id
-        data_type: Int32
+        data_type: int32
         description: hello
       - name: color
-        data_type: String
+        data_type: string
       - name: date_day
-        data_type: Date
+        data_type: date
 """
 
 
@@ -66,8 +66,8 @@ my_model_wrong_order_sql = """
 
 select
   'blue' as color,
-  1::UInt32 as id,
-  toDate('2019-01-01') as date_day
+  1::uint32 as id,
+  to_date('2019-01-01') as date_day
 """
 
 
@@ -120,7 +120,7 @@ my_model_view_wrong_name_sql = """
 select
   'blue' as color,
   1 as error,
-  toDate('2019-01-01') as date_day
+  to_date('2019-01-01') as date_day
 """
 
 my_model_view_wrong_order_sql = """
@@ -132,8 +132,8 @@ my_model_view_wrong_order_sql = """
 
 select
   'blue' as color,
-  1::UInt32 as id,
-  toDate('2019-01-01') as date_day
+  1::uint32 as id,
+  to_date('2019-01-01') as date_day
 """
 
 
@@ -147,8 +147,8 @@ my_model_incremental_wrong_order_sql = """
 
 select
   'blue' as color,
-  1::UInt32 as id,
-  toDate('2019-01-01') as date_day
+  1::uint32 as id,
+  to_date('2019-01-01') as date_day
 """
 
 my_model_incremental_wrong_name_sql = """
@@ -175,14 +175,14 @@ models:
         enforced: true
     columns:
       - name: id
-        data_type: Int32
+        data_type: int32
         constraints:
           - type: check
             expression: '> 0'
       - name: color
-        data_type: String
+        data_type: string
       - name: date_day
-        data_type: Date
+        data_type: date
   - name: bad_foreign_key_model
     config:
       contract:
@@ -193,7 +193,7 @@ models:
         expression: 'foreign_key_model (id)'
     columns:
       - name: id
-        data_type: Int32
+        data_type: int32
   - name: check_constraints_model
     config:
       contract:
@@ -204,11 +204,11 @@ models:
         expression: 'id > 100 and id < 200'
     columns:
       - name: id
-        data_type: Int32
+        data_type: int32
       - name: color
-        data_type: String
+        data_type: string
       - name: date_day
-        data_type: Date
+        data_type: date
 """
 
 bad_column_constraint_model_sql = """
@@ -218,7 +218,7 @@ bad_column_constraint_model_sql = """
   )
 }}
 
-SELECT 5::Int32 as id, 'black' as color, toDate('2023-01-01') as date_day
+SELECT 5::int32 as id, 'black' as color, to_date('2023-01-01') as date_day
 """
 
 bad_foreign_key_model_sql = """
@@ -228,7 +228,7 @@ bad_foreign_key_model_sql = """
   )
 }}
 
-SELECT 1::Int32 as id
+SELECT 1::int32 as id
 """
 
 check_constraints_model_sql = """
@@ -240,8 +240,8 @@ check_constraints_model_sql = """
 
 select
   'blue' as color,
-  101::Int32 as id,
-  toDate('2019-01-01') as date_day
+  101::int32 as id,
+  to_date('2019-01-01') as date_day
 """
 
 check_constraints_model_fail_sql = """
@@ -253,6 +253,6 @@ check_constraints_model_fail_sql = """
 
 select
   'blue' as color,
-  1::Int32 as id,
-  toDate('2019-01-01') as date_day
+  1::int32 as id,
+  to_date('2019-01-01') as date_day
 """

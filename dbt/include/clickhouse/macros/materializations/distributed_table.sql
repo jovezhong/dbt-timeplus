@@ -109,7 +109,7 @@
   {% endfor %}
   {{ sql_header if sql_header is not none }}
 
-  create table {{ relation.include(database=False) }}
+  create stream {{ relation.include(database=False) }}
   {{ on_cluster_clause(relation) }} (
       {{col_list | join(', ')}}
 

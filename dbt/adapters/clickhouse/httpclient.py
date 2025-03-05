@@ -1,7 +1,7 @@
 from typing import List
 
-import clickhouse_connect
-from clickhouse_connect.driver.exceptions import DatabaseError, OperationalError
+import timeplus_connect
+from timeplus_connect.driver.exceptions import DatabaseError, OperationalError
 from dbt.adapters.__about__ import version as dbt_adapters_version
 from dbt_common.exceptions import DbtDatabaseError
 
@@ -55,7 +55,7 @@ class ChHttpClient(ChClientWrapper):
 
     def _create_client(self, credentials):
         try:
-            return clickhouse_connect.get_client(
+            return timeplus_connect.get_client(
                 host=credentials.host,
                 port=credentials.port,
                 username=credentials.user,

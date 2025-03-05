@@ -24,10 +24,10 @@
     select
       t.name as name,
       t.database as schema,
-      multiIf(
+      multi_if(
         engine in ('MaterializedView', 'View'), 'view',
         engine = 'Dictionary', 'dictionary',
-        'table'
+        'stream'
       ) as type,
       db.engine as db_engine,
       {%- if adapter.get_clickhouse_cluster_name() -%}
@@ -57,14 +57,14 @@
   {{ return(sql_convert_columns_in_relation(load_result('get_columns').table)) }}
 {% endmacro %}
 
-{% macro clickhouse__drop_relation(relation, obj_type='table') -%}
+{% macro clickhouse__drop_relation(relation, obj_type='stream') -%}
   {% call statement('drop_relation', auto_begin=False) -%}
     {# drop relation on cluster by default if cluster is set #}
     drop {{ obj_type }} if exists {{ relation }} {{ on_cluster_clause(relation.without_identifier(), True)}}
   {%- endcall %}
 {% endmacro %}
 
-{% macro clickhouse__rename_relation(from_relation, to_relation, obj_type='table') -%}
+{% macro clickhouse__rename_relation(from_relation, to_relation, obj_type='stream') -%}
   {% call statement('drop_relation') %}
     drop {{ obj_type }} if exists {{ to_relation }} {{ on_cluster_clause(to_relation.without_identifier())}}
   {% endcall %}
